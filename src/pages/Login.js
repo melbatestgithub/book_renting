@@ -59,7 +59,7 @@ const SignUpPage = () => {
             />
             <Button variant="contained" color="primary" fullWidth sx={{ mb: 1 }}>Login</Button>
             <Typography variant="body2" align="center">
-              Have not an account? <Link href="#" color="primary">Sign up</Link>
+              Have not an account <Link href="#" color="primary">Sign up</Link>
             </Typography>
           </Box>
         </Grid>
