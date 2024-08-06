@@ -1,3 +1,5 @@
+// src/components/Sidebar.js
+
 import React, { useState } from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Divider, IconButton, Button, Typography } from '@mui/material';
 import { Menu as MenuIcon, Dashboard as DashboardIcon, Book as BookIcon, Notifications as NotificationsIcon, Settings as SettingsIcon, ExitToApp as ExitToAppIcon } from '@mui/icons-material';
@@ -14,6 +16,7 @@ const Sidebar = () => {
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon sx={{ color: activeItem === 'Dashboard' ? 'white' : '#B6B6B6' }} />, link: '/' },
     { text: 'Books', icon: <BookIcon sx={{ color: activeItem === 'Books' ? 'white' : '#B6B6B6' }} />, link: '/books' },
+    { text: 'Owners', icon: <BookIcon sx={{ color: activeItem === 'Owners' ? 'white' : '#B6B6B6' }} />, link: '/owners' },
     { text: 'Others', icon: <BookIcon sx={{ color: activeItem === 'Others' ? 'white' : '#B6B6B6' }} />, link: '/others' },
     { text: 'Notification', icon: <NotificationsIcon sx={{ color: activeItem === 'Notification' ? 'white' : '#B6B6B6' }} />, link: '/notification' },
     { text: 'Settings', icon: <SettingsIcon sx={{ color: activeItem === 'Settings' ? 'white' : '#B6B6B6' }} />, link: '/settings' },
