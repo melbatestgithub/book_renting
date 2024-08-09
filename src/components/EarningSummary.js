@@ -1,37 +1,34 @@
-// src/components/EarningSummary.js
 import React from 'react';
-import { Box, Typography, Paper } from '@mui/material';
-import { blue } from '@mui/material/colors';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Box, Typography } from '@mui/material';
 
 const data = [
-  { name: 'Mar', income: 1200, lastYear: 1100 },
-  { name: 'Apr', income: 1500, lastYear: 1300 },
-  { name: 'May', income: 1700, lastYear: 1600 },
-  { name: 'Jun', income: 1400, lastYear: 1200 },
-  { name: 'Jul', income: 1800, lastYear: 1500 },
-  { name: 'Aug', income: 2000, lastYear: 1700 },
-  { name: 'Sep', income: 2100, lastYear: 1900 },
-  { name: 'Oct', income: 2200, lastYear: 2000 },
+  { name: 'May', last6Months: 200000, lastYear: 150000 },
+  { name: 'Jun', last6Months: 240000, lastYear: 180000 },
+  { name: 'Jul', last6Months: 220000, lastYear: 200000 },
+  { name: 'Aug', last6Months: 260000, lastYear: 230000 },
+  { name: 'Sep', last6Months: 280000, lastYear: 240000 },
+  { name: 'Oct', last6Months: 300000, lastYear: 250000 },
 ];
 
-const EarningSummary = () => {
+const EarningSummaryChart = () => {
   return (
-    <Paper sx={{ padding: '16px' }}>
-      <Typography variant="subtitle1" color="textSecondary">Earning Summary</Typography>
+    <Box sx={{ p: 2, boxShadow: 3, borderRadius: 2, bgcolor: 'background.paper' }}>
+      <Typography variant="h6" gutterBottom>Earning Summary</Typography>
+      <Typography variant="subtitle2" gutterBottom>Mar 2022 - Oct 2024</Typography>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="income" stroke={blue[500]} activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="lastYear" stroke="#8884d8" />
+          <Line type="monotone" dataKey="last6Months" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="lastYear" stroke="#82ca9d" />
         </LineChart>
       </ResponsiveContainer>
-    </Paper>
+    </Box>
   );
 };
 
-export default EarningSummary;
+export default EarningSummaryChart;
