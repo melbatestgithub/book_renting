@@ -13,7 +13,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
 const Content = () => {
   return (
-    <Container style={{ marginTop: '20px', marginLeft: '240px',maxWidth:"200px" }}>
+    <Container style={{ marginTop: '20px', marginLeft: '240px',maxWidth:"200px",background:"red" }}>
       <Typography variant="h5">This month statistics</Typography>
       <Typography variant="subtitle1">Today</Typography>
       <Paper elevation={3} style={{ padding: '20px', margin: '20px 0' }}>

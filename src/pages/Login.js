@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Grid, Typography, TextField, Button, Checkbox, FormControlLabel, Link, Snackbar } from '@mui/material';
+import { Box, Grid, Typography, TextField, Button, Checkbox, FormControlLabel, Link, Snackbar, CircularProgress } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -25,6 +25,7 @@ const LoginPage = () => {
     password: '',
     rememberMe: false,
   });
+  const [loading, setLoading] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -41,32 +42,43 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = formData;
-  
+    setLoading(true); // Show spinner
+
     try {
-      const response = await axios.post('http://localhost:8000/auth/login', {
+      const response = await axios.post('https://book-renting-server-side.onrender.com/auth/login', {
         email,
         password,
       });
-  
+
+      const { id, email: userEmail, role, token, firstName, lastName, abilities } = response.data;
+
+      localStorage.setItem('user', JSON.stringify({
+        id,
+        email: userEmail,
+        role,
+        token,
+        firstName,
+        lastName,
+        abilities,
+      }));
+
       console.log('User logged in successfully:', response.data);
-      
-      const { role } = response.data;  // Adjust based on your response structure
+
       let redirectPath = '/';
-     
-  
+
       // Check the role and set the redirect path accordingly
       if (role === 'Owner') {
         redirectPath = '/owner-dashboard';  // Adjust to your actual route
       }
-      if(role==="ADMIN"){
-        redirectPath="/"
+      if (role === "ADMIN") {
+        redirectPath = "/";
       }
-      console.log(response.data.role)
-  
+      console.log(response.data.role);
+
       setSnackbarMessage('Login successful!');
       setSnackbarSeverity('success');
       setOpenSnackbar(true);
-  
+
       setTimeout(() => {
         navigate(redirectPath);
       }, 2000);
@@ -75,9 +87,10 @@ const LoginPage = () => {
       setSnackbarMessage('Login failed. Please check your credentials.');
       setSnackbarSeverity('error');
       setOpenSnackbar(true);
+    } finally {
+      setLoading(false); // Hide spinner
     }
   };
-  
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
@@ -148,10 +161,12 @@ const LoginPage = () => {
                 label="Remember me"
                 sx={{ mb: 1 }}
               />
-              <Button variant="contained" color="primary" fullWidth sx={{ mb: 1 }} type="submit">Login</Button>
+              <Button variant="contained" color="primary" fullWidth sx={{ mb: 1 }} type="submit" disabled={loading}>
+                {loading ? <CircularProgress size={24} /> : 'Login'}
+              </Button>
             </form>
             <Typography variant="body2" align="center">
-              Have not an account? <Link href="#" color="primary">Sign up</Link>
+              Have not an account? <Link href="/register" color="primary">Sign up</Link>
             </Typography>
           </Box>
         </Grid>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Grid, Typography, TextField, Button, Checkbox, FormControlLabel, Link, Snackbar } from '@mui/material';
+import { Box, Grid, Typography, TextField, Button, Checkbox, FormControlLabel, Link, Snackbar, CircularProgress } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import MuiAlert from '@mui/material/Alert';
 import frame from '../assets/frame.png';
@@ -25,10 +26,14 @@ const SignUpPage = () => {
     confirmPassword: '',
     address: '',
     phoneNumber: '',
+    firstName: '',
+    lastName: '',
     acceptTerms: false,
   });
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [loading, setLoading] = useState(false); // Spinner state
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -40,20 +45,24 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, password, confirmPassword, address, phoneNumber, acceptTerms } = formData;
+    const { email, password, confirmPassword, address, phoneNumber, acceptTerms, firstName, lastName } = formData;
 
     if (!acceptTerms) {
       alert('You must accept the terms and conditions to register.');
       return;
     }
 
+    setLoading(true); // Show spinner
+
     try {
-      const response = await axios.post('http://localhost:8000/auth/register', {
+      const response = await axios.post('https://book-renting-server-side.onrender.com/auth/register', {
         email,
         password,
         confirmPassword,
         address,
         phoneNumber,
+        firstName,
+        lastName,
         role: 'Owner', // Default role
       });
 
@@ -65,10 +74,19 @@ const SignUpPage = () => {
         confirmPassword: '',
         address: '',
         phoneNumber: '',
+        firstName: '',
+        lastName: '',
         acceptTerms: false,
       });
+
+      setTimeout(() => {
+        navigate('/login'); // Redirect to login page
+      }, 2000);
+
     } catch (error) {
-      console.error('Error registering user:', error.response.data);
+      console.error('Error registering user:', error.response?.data);
+    } finally {
+      setLoading(false); // Hide spinner
     }
   };
 
@@ -128,6 +146,24 @@ const SignUpPage = () => {
               />
               <TextField
                 fullWidth
+                label="FirstName"
+                name="firstName"
+                margin="normal"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+              />
+              <TextField
+                fullWidth
+                label="LastName"
+                name="lastName"
+                margin="normal"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+              />
+              <TextField
+                fullWidth
                 label="Password"
                 type="password"
                 name="password"
@@ -168,10 +204,12 @@ const SignUpPage = () => {
                 label="I accept the Terms and Conditions"
                 sx={{ mb: 1 }}
               />
-              <Button variant="contained" color="primary" fullWidth sx={{ mb: 1 }} type="submit">Sign Up</Button>
+              <Button variant="contained" color="primary" fullWidth sx={{ mb: 1 }} type="submit" disabled={loading}>
+                {loading ? <CircularProgress size={24} /> : 'Sign Up'}
+              </Button>
             </form>
             <Typography variant="body2" align="center">
-              Already have an account? <Link href="#" color="primary">Login</Link>
+              Already have an account? <Link href="/login" color="primary">Login</Link>
             </Typography>
           </Box>
         </Grid>
