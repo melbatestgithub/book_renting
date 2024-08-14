@@ -14,7 +14,8 @@ import {
   DialogContent,
   DialogActions,
   Snackbar,
-  CircularProgress
+  CircularProgress,
+  Drawer
 } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Sidebar from '../../components/bookOwner/Sidebar';
@@ -206,7 +207,7 @@ const BookUploadPage = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <Sidebar />
-      <Box sx={{ flexGrow: 1,backgroundColor: '#f0f2f5' }}>
+      <Box sx={{ flexGrow: 1,marginTop:"1rem" }}>
         <Topbar />
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 5 }}>
           <Typography variant="h4" gutterBottom>
@@ -227,7 +228,8 @@ const BookUploadPage = () => {
                   {b.book_name} - {b.author}
                 </MenuItem>
               ))}
-              <MenuItem value="add">Add</MenuItem>
+              <Drawer sx={{border:"1px solid gray"}}/>
+              <MenuItem value="add" sx={{color:"#00ABFF"}}>Add</MenuItem>
             </TextField>
             <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
               <FormControl fullWidth>
@@ -274,10 +276,9 @@ const BookUploadPage = () => {
               />
             </IconButton>
             <Button
-              variant="contained"
-              color="primary"
+              
               onClick={uploadBookCover}
-              sx={{ width: '100%', mt: 2 }}
+              sx={{ width: '60%', mt: 2,background:"#00ABFF",color:"white",padding:"1rem 0",borderRadius:5,textTransform:"capitalize" }}
             >
              {loading ? <CircularProgress size={24} /> : 'Submit'}
             </Button>
